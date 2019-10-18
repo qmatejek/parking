@@ -2,10 +2,10 @@ Capacity: 3
 Enter
 Enter
 Enter
-Exit 1
 Exit 0
-Exit 2
-Enter
-Enter
 Exit 1
+Exit 2
+Exit 0
+Enter
+Exit -1
 Exit 0

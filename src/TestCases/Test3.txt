@@ -1,0 +1,45 @@
+Capacity: 15
+Enter
+Enter
+Enter
+Enter
+Enter
+Enter
+Exit 2
+Enter
+Enter
+Enter
+Exit 5
+Enter
+Enter
+Enter
+Enter
+Exit 0
+Exit 3
+Enter 
+Enter
+Enter
+Enter
+Enter
+Exit 6
+Exit 7
+Exit 8
+Enter
+Enter
+Enter
+Enter
+Exit 0
+Exit 1
+Exit 2
+Exit 3
+Exit 4
+Exit 5
+Exit 6
+Exit 7
+Exit 8
+Exit 9
+Exit 10
+Exit 11
+Exit 12
+Exit 13
+Exit 14

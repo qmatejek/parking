@@ -1,66 +1,72 @@
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.util.Arrays;
 import java.util.Scanner;
 
 public class ParkingMain
 {
     public static void main(String[] args) throws FileNotFoundException {
-//        ParkingLot lot = new ParkingLot(3);
-//        lot.entrance();
-//        lot.entrance();
-//        lot.entrance();
-//        //lot.entrance();
-//        lot.exitLot(1);
-//        lot.entrance();
-//        lot.exitLot(3);
-//        lot.exitLot(0);
-//
-//        System.out.println("===========================================");
 
-        Scanner scan = new Scanner(new File("src/Test1.txt"));
+        String testFile = "src/TestCases/" + getTestCase();
+        Scanner scan = new Scanner(new File(testFile));
 
-        //int capacity = 0;
         boolean flag = false;
 
-        String firstLine = scan.nextLine();
-        System.out.println("This is the first line: " + firstLine);
+        String firstLine = scan.nextLine(); //Gets the first line of the file which contains the capacity.
         String array[] = firstLine.split(" ");
+
         int capacity = Integer.parseInt(array[1]);
-        ParkingLot lt = new ParkingLot(capacity);
 
-        while (scan.hasNextLine()) {
+        ParkingLot lt = new ParkingLot(capacity); //Uses that capacity to instantiate a ParkingLot object.
+
+        while (scan.hasNextLine()) //Searches file for Enter/Exit commands
+        {
             String line = scan.nextLine();
-
-            System.out.println("This is line: " + line);
 
             String arr[] = line.split(" ");
 
-            //int capacity = 0;
-            //ParkingLot lt;
-
-//            if(arr[0].contains("Capacity"))
-//            {
-//                //System.out.println("This is inside the capacity branch");
-//                capacity = Integer.parseInt(arr[1]);
-//               // lt = new ParkingLot(capacity);
-//               // System.out.println("This is inside the capacity branch. This is capacity: " + capacity);
-//            }
-
-            //System.out.println("This is outside the capacity branch. This is capacity: " + capacity);
-           // lt = new ParkingLot(capacity);
 
             if(arr[0].contains("Enter"))
             {
-                lt.entrance();
+                lt.entrance(); //Car enters lot
             }
             else if(arr[0].contains("Exit"))
             {
-               // System.out.println("This is arr[1]: " + arr[1]);
                 int spotNum = Integer.parseInt(arr[1]);
-                lt.exitLot(spotNum);
+                lt.exitLot(spotNum); //Car exits lot
             }
 
-            //System.out.println(line);
         }
+        //lt.showLot(); //If you want to see what cars are in the lot at the end of the file, just uncomment this. false means spot is empty.
+
+        System.out.println("This parking lot's total earnings were: $" + lt.getEarnings());
+        scan.close();
+    }
+
+    //This method asks the user which test case they want to use and returns the file name.
+    public static String getTestCase()
+    {
+        String fileName;
+
+        Scanner scnr = new Scanner(System.in);
+
+        System.out.println("Please enter which test case you would like to run. \nYour choices are: Test1.txt, Test2.txt" +
+                ", Test3.txt, Test4.txt, Test5.txt, Test6.txt, and Test7.txt");
+        System.out.print("Enter your choice: ");
+        fileName = scnr.nextLine();
+
+        //List of possible file names
+        String[] files = {"Test1.txt", "Test2.txt", "Test3.txt", "Test4.txt", "Test5.txt", "Test6.txt", "Test7.txt"};
+
+        while(Arrays.binarySearch(files, fileName) < 0) //Input valdation: Checking for invalid test file name.
+        {
+            System.out.println("The file name you entered was invalid, please try again.");
+            System.out.print("Enter your choice: ");
+            fileName = scnr.nextLine();
+        }
+
+        scnr.close();
+
+        return fileName;
     }
 }

@@ -9,18 +9,13 @@ public class Car
         timestamp = ts;
     }
 
-//    public void setTimestamp(long ts)
-//    {
-//        timestamp = ts;
-//    }
-
+    //Returns the timestamp on the ticket for this car.
     public long getTimestamp()
     {
         return timestamp;
     }
 
-    public int getSpotNumber()
-    {
-        return spotNumber;
-    }
+    //Returns the spot number on the ticket for this car.
+    public int getSpotNumber() { return spotNumber; }
+
 }
