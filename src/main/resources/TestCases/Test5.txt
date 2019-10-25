@@ -1,0 +1,57 @@
+Capacity: 12
+Enter
+Enter
+Enter
+Enter
+Exit 1
+Exit 3
+Enter
+Enter
+Enter
+Enter
+Enter
+Enter
+Exit 3
+Exit 6
+Exit 7
+Exit 0
+Enter
+Enter
+Enter
+Enter
+Enter
+Enter
+Exit 2
+Exit 4
+Enter
+Enter
+Enter
+Enter
+Enter
+Enter
+Exit 0
+Exit 5
+Exit 7
+Exit 9
+Exit 11
+Enter
+Enter
+Exit 1
+Exit 3
+Exit 6
+Exit 8
+Enter
+Exit 0
+Exit 2
+Exit 10
+Enter
+Enter
+Enter
+Exit 0
+Exit 1
+Exit 2
+Exit 4
+Exit 5
+Enter
+Exit 0
+Exit 3

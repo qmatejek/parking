@@ -1,0 +1,22 @@
+Capacity: 5
+Enter
+Enter
+Exit 0
+Enter
+Enter
+Enter
+Exit 1
+Exit 3
+Enter
+Enter
+Enter
+Enter
+Enter
+Enter
+Exit 4
+Enter
+Exit 0
+Exit 1
+Exit 2
+Exit 3
+Exit 4

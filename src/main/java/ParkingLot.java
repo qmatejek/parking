@@ -7,14 +7,16 @@ public class ParkingLot
     private int capacity;
     private int numCars = 0; //The number of cars in the lot.
     private float earnings = 0;
+    private String group;
 
     private boolean spots[]; //This array simulates the spots in the parking lot. true = spot taken, false = spot empty
 
     private ArrayList<Car> carList = new ArrayList<Car>(); //This holds the information for each car. Specifically its spot # and its timestamp.
 
-    ParkingLot(int cap)
+    ParkingLot(int cap, String grp)
     {
         capacity = cap;
+        group = grp;
 
         if(cap <= 0)//Input validation: Checking to make sure the capacity is a valid number.
         {
@@ -71,7 +73,7 @@ public class ParkingLot
     }
 
     //This method is basically the entrance gate. When a car enters it's ticket is added to carList.
-    public void entrance()
+    public void entrance(Car c)
     {
         long enterTime = 0;
 
@@ -87,7 +89,9 @@ public class ParkingLot
                 if(spots[i] == false)
                 {
                     System.out.println("Car is entering: Printing ticket...");
+                    System.out.println("Car is entering group " + group + "'s Parking lot.");
                     carList.add(new Car(i, enterTime));
+                    c.setTimestamp(enterTime);
                     spots[i] = true;
                     break;
                 }
@@ -97,8 +101,10 @@ public class ParkingLot
         }
     }
 
+
+
     //This method searches the list of cars/tickets in the lot to see which one has the matching spot number.
-    private int searchCarList(ArrayList<Car> list, int spotNum)
+    public static int searchCarList(ArrayList<Car> list, int spotNum)
     {
         int index = -1;
 
@@ -106,7 +112,12 @@ public class ParkingLot
         {
             Car cr = list.get(i);
 
-            if(cr.getSpotNumber() == spotNum)
+//            if(cr.getSpotNumber() == spotNum)
+//            {
+//                index = i;
+//            }
+
+            if(cr.getCarNum() == spotNum)
             {
                 index = i;
             }
@@ -224,9 +235,66 @@ public class ParkingLot
         }
     }
 
+    public void exitLot2(Car c)
+    {
+        if(isEmpty())
+        {
+            System.out.println("=======================================================================");
+            System.out.println("Invalid command: No cars can exit a parking lot if it is already empty");
+            System.out.println("=======================================================================");
+        }
+        else
+        {
+            long exitTime = System.nanoTime();
+            long stayTime = 0;
+
+            //Car c = list.get(index);
+
+            stayTime = exitTime - c.getTimestamp();
+
+            float stayTimeMS = (float)stayTime / 1000000;
+
+            float price = (float) (Math.round(calcPrice(stayTimeMS) * 100.0) / 100.0);
+
+            DecimalFormat df = new DecimalFormat("###,###.##"); //It's probably not even going to be close to $999, but better safe than sorry.
+
+            System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+            System.out.println("Car is exiting: Please insert ticket...");
+            System.out.println("Car stayed for " + stayTimeMS + " hours.");
+            System.out.println("Car owes:  $" + df.format(price));
+            System.out.println("Car has paid.");
+
+            earnings += price;
+
+            System.out.println("Car is exiting group " + c.getGroup() + "'s lot.");
+            System.out.println("Car has exited the lot.");
+            System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+
+            //list.remove(index);
+            numCars--;
+        }
+    }
+
     //This method just outputs the current state of the lot. Shows which spots are taken (true) and which are empty (false).
     public void showLot()
     {
         System.out.println(Arrays.toString(spots));
+    }
+
+    //This method just checks to see if a spot is available in the current lot.
+    public boolean isAvailable()
+    {
+        boolean available = false;
+
+        for(int i = 0; i < spots.length; i++)
+        {
+            if(spots[i] == false)
+            {
+                available = true; //A spot is available
+                break; //No point in checking other spots, only needed to know there was one available spot.
+            }
+        }
+
+        return available;
     }
 }
