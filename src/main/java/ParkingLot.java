@@ -8,6 +8,7 @@ public class ParkingLot
     private int numCars = 0; //The number of cars in the lot.
     private float earnings = 0;
     private String group;
+    private float[] prices;
 
     private boolean spots[]; //This array simulates the spots in the parking lot. true = spot taken, false = spot empty
 
@@ -17,6 +18,10 @@ public class ParkingLot
     {
         capacity = cap;
         group = grp;
+
+        System.out.println("This is grp: " + grp);
+        prices = Groups.getPricing(grp);
+        System.out.println("This is pricing: " + Arrays.toString(prices));
 
         if(cap <= 0)//Input validation: Checking to make sure the capacity is a valid number.
         {
@@ -133,37 +138,47 @@ public class ParkingLot
 
         if(stayTime < 0.5)
         {
-            price = 0;
+            //price = 0;
+            price = prices[0];
         }
         else if(stayTime > 0.5 && stayTime < 1)
         {
-            price = 2;
+            //price = 2;
+            price = prices[1];
         }
         else if(stayTime > 1 && stayTime < 2)
         {
-            price = 4;
+            //price = 4;
+            price = prices[2];
         }
         else if(stayTime > 2 && stayTime < 3)
         {
-            price = 8;
+            //price = 8;
+            price = prices[3];
         }
         else if(stayTime > 3 && stayTime < 4)
         {
-            price = 10;
+            //price = 10;
+            price = prices[4];
         }
         else if(stayTime > 4 && stayTime < 5)
         {
-            price = 12;
+            //price = 12;
+            price = prices[5];
         }
         else if(stayTime > 5 && stayTime < 24)
         {
-            price = 14;
+            //price = 14;
+            price = prices[6];
         }
         else if(stayTime > 24)
         {
             float temp = stayTime / 24;
-            price = temp * 26;
+            //price = temp * 26;
+            price = prices[7] * temp;
         }
+
+        System.out.println("This is prices: " + Arrays.toString(prices));
 
         return price;
     }

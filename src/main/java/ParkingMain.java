@@ -39,14 +39,36 @@ public class ParkingMain
 
         //boolean flag = false;
 
-        String firstLine = scan.nextLine(); //Gets the first line of the file which contains the capacity.
+        String firstLine = scan.nextLine(); //Gets the first line of the file which contains the capacityA.
         String array[] = firstLine.split(" ");
 
-        String secondLine = scan.nextLine(); //Gets the first line of the file which contains the capacity.
+        String secondLine = scan.nextLine(); //Gets the second line of the file which contains the capacityB.
         String array2[] = secondLine.split(" ");
 
-        String thirdLine = scan.nextLine(); //Gets the first line of the file which contains the capacity.
+        String thirdLine = scan.nextLine(); //Gets the third line of the file which contains the capacityC.
         String array3[] = thirdLine.split(" ");
+
+        String fourthLine = scan.nextLine(); //Gets the fourth line of the file which contains the discounts
+        String array4[] = fourthLine.split(" ");
+
+        String fifthLine = scan.nextLine(); //Gets the fourth line of the file which contains the discounts
+        String array5[] = fifthLine.split("/");
+
+        Groups.setDiscountA(Integer.parseInt(array4[1]));
+        Groups.setDiscountB(Integer.parseInt(array4[2]));
+        Groups.setDiscountC(Integer.parseInt(array4[3]));
+
+        Groups.setPolicyA(array5[1]);
+        Groups.setPolicyB(array5[2]);
+        Groups.setPolicyC(array5[3]);
+
+        System.out.println("This is policy A: " + Groups.getPolicyA());
+        System.out.println("This is policy B: " + Groups.getPolicyB());
+        System.out.println("This is policy C: " + Groups.getPolicyC());
+
+        System.out.println("This is discount A: " + Groups.getDiscountA());
+        System.out.println("This is discount B: " + Groups.getDiscountB());
+        System.out.println("This is discount C: " + Groups.getDiscountC());
 
         System.out.println("First Line: " + firstLine);
         System.out.println("Second Line: " + secondLine);

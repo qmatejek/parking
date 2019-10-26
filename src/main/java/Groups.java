@@ -3,9 +3,10 @@ import java.util.Arrays;
 public class Groups
 {
     private String groupName;
-    private int discount;
+    private static int discountA, discountB, discountC;
     public static String[] names = {"A", "B", "C"};
     private ParkingLot gLot;
+    private static String policiesA, policiesB, policiesC;
 
     //Arrays.binarySearch(files, fileName) < 0
 
@@ -25,14 +26,27 @@ public class Groups
 
     public ParkingLot getLot(ParkingLot lt) { return gLot; }
 
-    public int getDiscount() { return discount; }
+    public static int getDiscountA() { return discountA; }
+    public static int getDiscountB() { return discountB; }
+    public static int getDiscountC() { return discountC; }
 
-    public void setDiscount(int dis) { discount = dis; }
+    public static void setDiscountA(int disA) { discountA = disA; }
+    public static void setDiscountB(int disB) { discountB = disB; }
+    public static void setDiscountC(int disC) { discountC = disC; }
 
     public static String[] getNames() { return names; }
 
+    public static void setPolicyA(String polA) { policiesA = polA;}
+    public static String getPolicyA() { return policiesA; }
+
+    public static void setPolicyB(String polB) { policiesB = polB;}
+    public static String getPolicyB() { return policiesB; }
+
+    public static void setPolicyC(String polC) { policiesC = polC;}
+    public static String getPolicyC() { return policiesC; }
+
     //This method returns the prices for all groups, so it is static so that it can be run without instantiating an object.
-    public static float[] getPricing(String gName, int discount)
+    public static float[] getPricing(String gName)
     {
         float price[] = new float[8];
 
@@ -42,15 +56,17 @@ public class Groups
         float priceB[] = {0.0f, 2.0f, 4.0f, 6.0f, 8.0f, 10.0f, 12.0f, 22.0f};
         float priceC[] = {0.0f, 2.0f, 4.0f, 10.0f, 14.0f, 16.0f, 18.0f, 30.0f};
 
-        if(discount != 0)
+
+        for(int i = 0; i < 8; i++)
         {
-            for(int i = 0; i < 8; i++)
-            {
-                priceA[i] = priceA[i] * ((100 - discount) / 100);
-                priceB[i] = priceB[i] * ((100 - discount) / 100);
-                priceC[i] = priceC[i] * ((100 - discount) / 100);
-            }
+            //They are casted to float here, because discount represents a percentage, so I don't think a float is necessary
+            //for that, but it has to be casted to float here to make sure the correct result is given
+            priceA[i] = priceA[i] * ((100.0f - (float)discountA) / 100.0f);
+            priceB[i] = priceB[i] * ((100.0f - (float)discountB) / 100.0f);
+            priceC[i] = priceC[i] * ((100.0f - (float)discountC) / 100.0f);
         }
+
+
 
         if(gName == "A")
             price = priceA;
