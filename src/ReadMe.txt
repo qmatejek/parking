@@ -34,6 +34,8 @@ anything checking for it. I assume that's okay since it still fulfills the requi
 6.) I'm pretty sure I use all the new required features, but if I missed one then I want to point out that the assignment
 says "can" a lot. Like "A Car can..." or "Groups can...". It says they can, not that they do.
 
+7.) Most of the input validation was tested during version 1, so I only tested the things that had been majorly changed in my new test cases.
+
 
 Test Cases:
 ===========
