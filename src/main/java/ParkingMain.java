@@ -8,22 +8,17 @@ public class ParkingMain
 {
     public static void main(String[] args) throws FileNotFoundException {
 
-        System.out.println("Nee hoi manoi");
-        //String testFile = new File("").getAbsolutePath() + "\\target\\TestCases\\" + getTestCase();
         String fName = getTestCase();
 
         String fs = File.separator; //This is required to make this work on both Windows and Linux. (Might even work on Mac, but I can't test that.)
 
         String testFile = new File("").getAbsolutePath() + fs + "TestCases" + fs + fName;
 
-        System.out.println("This is testFile: " + testFile);
-        System.out.println("Nee hoi manoi");
-
         Scanner scan;
 
         //When I ran this in IntelliJ, the string in testFile2 worked just fine, but when I ran it from cmd testFile2
         //did not work because it added an extra /target/ for some reason. So I added this try/catch bit that makes it
-        //where it works for both... On Windows at least.
+        //where it works for both... On Windows at least. Should work on Linux too.
         try
         {
             scan = new Scanner(new File(testFile));
@@ -34,61 +29,42 @@ public class ParkingMain
             scan = new Scanner(new File(testFile2));
         }
 
-        String str = new File("").getAbsolutePath() + fs + "target" + fs + "TestCases" + fs;
-        System.out.println("File path: " + str);
 
-        //boolean flag = false;
 
         String firstLine = scan.nextLine(); //Gets the first line of the file which contains the capacityA.
         String array[] = firstLine.split(" ");
 
-        String secondLine = scan.nextLine(); //Gets the second line of the file which contains the capacityB.
+        String secondLine = scan.nextLine(); //Gets the second line of the file which contains the discounts
         String array2[] = secondLine.split(" ");
 
-        String thirdLine = scan.nextLine(); //Gets the third line of the file which contains the capacityC.
-        String array3[] = thirdLine.split(" ");
+        String thirdLine = scan.nextLine(); //Gets the third line of the file which contains the discounts
+        String array3[] = thirdLine.split("/");
 
-        String fourthLine = scan.nextLine(); //Gets the fourth line of the file which contains the discounts
-        String array4[] = fourthLine.split(" ");
+        Groups.setDiscountA(Integer.parseInt(array2[1]));
+        Groups.setDiscountB(Integer.parseInt(array2[2]));
+        Groups.setDiscountC(Integer.parseInt(array2[3]));
 
-        String fifthLine = scan.nextLine(); //Gets the fourth line of the file which contains the discounts
-        String array5[] = fifthLine.split("/");
+        Groups.setPolicyA(array3[1]);
+        Groups.setPolicyB(array3[2]);
+        Groups.setPolicyC(array3[3]);
 
-        Groups.setDiscountA(Integer.parseInt(array4[1]));
-        Groups.setDiscountB(Integer.parseInt(array4[2]));
-        Groups.setDiscountC(Integer.parseInt(array4[3]));
+        System.out.println("This is Group A's policies: " + Groups.getPolicyA());
+        System.out.println("This is Group B's policies: " + Groups.getPolicyB());
+        System.out.println("This is Group C's policies: " + Groups.getPolicyC());
 
-        Groups.setPolicyA(array5[1]);
-        Groups.setPolicyB(array5[2]);
-        Groups.setPolicyC(array5[3]);
-
-        System.out.println("This is policy A: " + Groups.getPolicyA());
-        System.out.println("This is policy B: " + Groups.getPolicyB());
-        System.out.println("This is policy C: " + Groups.getPolicyC());
-
-        System.out.println("This is discount A: " + Groups.getDiscountA());
-        System.out.println("This is discount B: " + Groups.getDiscountB());
-        System.out.println("This is discount C: " + Groups.getDiscountC());
-
-        System.out.println("First Line: " + firstLine);
-        System.out.println("Second Line: " + secondLine);
-        System.out.println("Third Line: " + thirdLine);
 
         int capacityA = Integer.parseInt(array[1]);
-        int capacityB = Integer.parseInt(array2[1]);
-        int capacityC = Integer.parseInt(array3[1]);
+        int capacityB = Integer.parseInt(array[2]);
+        int capacityC = Integer.parseInt(array[3]);
+
 
         ParkingLot ltA = new ParkingLot(capacityA, "A"); //Uses that capacity to instantiate a ParkingLot object.
         ParkingLot ltB = new ParkingLot(capacityB, "B"); //Uses that capacity to instantiate a ParkingLot object.
         ParkingLot ltC = new ParkingLot(capacityC, "C"); //Uses that capacity to instantiate a ParkingLot object.
 
-        Groups A = new Groups("A", ltA);
-        Groups B = new Groups("B", ltB);
-        Groups C = new Groups("C", ltC);
-
         ArrayList<Car> carList = new ArrayList<Car>();
 
-        int i = 0;
+        int i = 0; //Car number counter
 
         while (scan.hasNextLine()) //Searches file for Enter/Exit commands
         {
@@ -99,57 +75,50 @@ public class ParkingMain
 
             if(arr[0].contains("Enter"))
             {
-                Car cr = new Car(i);
-                System.out.println("This is i: " + i);
+                //Check to see if all lots are full.
+                if(!ltA.isAvailable() && !ltB.isAvailable() && !ltC.isAvailable())
+                {
+                    System.out.println("***********All lots are full, please try again later.*************");
+                    continue;
+                }
+
+                Car cr = new Car(i); //Initialize a car with the current car/ticket number.
                 i++;
 
+                String groupChoice = cr.pickGroup(Groups.names); //This car's initial group choice.
 
-
-                String groupChoice = cr.pickGroup(Groups.names);
-
-                //String temp[] = Groups.names;
                 ArrayList<String> temp = new ArrayList(Arrays.asList(Groups.names));
 
-                enterLot(groupChoice, cr, temp, ltA, ltB, ltC);
+                enterLot(groupChoice, cr, temp, ltA, ltB, ltC); //Used to check if initial group choice is available and
+                //picks a new one if it is not.
 
                 carList.add(cr);
 
-
-
-                //lt.entrance(); //Car enters lot
             }
             else if(arr[0].contains("Exit"))
             {
                 int num = Integer.parseInt(arr[1]);
-               // lt.exitLot(spotNum); //Car exits lot
-                System.out.println("This is num: " + num);
-                int index = ParkingLot.searchCarList(carList, num);
 
-                Car cr = carList.get(index);
+                int carNum = ParkingLot.searchCarList(carList, num);
+
+                Car cr = carList.get(carNum);
                 String grp = cr.getGroup();
 
                 if(grp == "A")
-                    ltA.exitLot2(cr);
+                    ltA.exitLot(cr);
                 else if(grp == "B")
-                    ltB.exitLot2(cr);
+                    ltB.exitLot(cr);
                 else if(grp == "C")
-                    ltC.exitLot2(cr);
+                    ltC.exitLot(cr);
 
-                carList.remove(index);
+                carList.remove(carNum);
             }
 
         }
-       // lt.showLot(); //If you want to see what cars are in the lot at the end of the file, just uncomment this. false means spot is empty.
-
-       // System.out.println("This parking lot's total earnings were: $" + lt.getEarnings());
-        scan.close();
-
-//        float A[] = {0.0f, 2.0f, 4.0f, 8.0f, 10.0f, 12.0f, 14.0f, 26.0f};
-//        float B[] = {0.0f, 2.0f, 4.0f, 6.0f, 8.0f, 10.0f, 12.0f, 22.0f};
-//
-//        System.out.println("This: " + Arrays.compare(B,A));
-
-        System.out.println("This is names: " + Arrays.toString(Groups.names));
+        //This part shows the earnings of each group and also how many cars are left in each lot.
+        System.out.println("Group A's lot's earnings: $" + ltA.getEarnings() + ". Cars left in group A's lot: " + ltA.getNumCars());
+        System.out.println("Group B's lot's earnings: $" + ltB.getEarnings() + ". Cars left in group B's lot: " + ltB.getNumCars());
+        System.out.println("Group C's lot's earnings: $" + ltC.getEarnings() + ". Cars left in group C's lot: " + ltC.getNumCars());
     }
 
     //This method asks the user which test case they want to use and returns the file name.
@@ -159,13 +128,13 @@ public class ParkingMain
 
         Scanner scnr = new Scanner(System.in);
 
-        System.out.println("Please enter which test case you would like to run. \nYour choices are: Test1.txt, Test2.txt" +
-                ", Test3.txt, Test4.txt, Test5.txt, Test6.txt, Test7.txt, and Test01.txt");
+        System.out.println("Please enter which test case you would like to run. \nYour choices are: Test01.txt, Test02.txt," +
+                " Test03.txt, Test04.txt, and Test05.txt");
         System.out.print("Enter your choice: ");
         fileName = scnr.nextLine();
 
         //List of possible file names
-        String[] files = {"Test1.txt", "Test2.txt", "Test3.txt", "Test4.txt", "Test5.txt", "Test6.txt", "Test7.txt", "Test01.txt"};
+        String[] files = {"Test01.txt", "Test02.txt", "Test03.txt", "Test04.txt", "Test05.txt"};
 
         Arrays.sort(files);
 
@@ -181,36 +150,37 @@ public class ParkingMain
         return fileName;
     }
 
+    //This function will let the car enter the cheapest lot IF there is a spot available. If there is not one available
+    //in that lot it will check the next cheapest and perform the same process on that one that it did on the first one.
     public static void enterLot(String group, Car cr, ArrayList<String> al, ParkingLot a, ParkingLot b, ParkingLot c)
     {
-
         if(group == "A")
-            if(a.isAvailable())
+            if(cr.checkAvailable(a))
                 a.entrance(cr);
             else
             {
                 al.remove("A");
-//                group = cr.pickGroup((String[]) al.toArray());
+                System.out.println("Group A's lot is full, picking next cheapest...");
                 group = cr.pickGroup(al.toArray(new String[0]));
                 enterLot(group, cr, al, a, b, c);
             }
         else if(group == "B")
-            if(b.isAvailable())
+            if(cr.checkAvailable(b))
                 b.entrance(cr);
             else
             {
                 al.remove("B");
-//                group = cr.pickGroup((String[]) al.toArray());
+                System.out.println("Group B's lot is full, picking next cheapest...");
                 group = cr.pickGroup(al.toArray(new String[0]));
                 enterLot(group, cr, al, a, b, c);
             }
         else if(group == "C")
-            if(c.isAvailable())
+            if(cr.checkAvailable(c))
                 c.entrance(cr);
             else
             {
                 al.remove("C");
-//                group = cr.pickGroup((String[]) al.toArray());
+                System.out.println("Group C's lot is full, picking next cheapest...");
                 group = cr.pickGroup(al.toArray(new String[0]));
                 enterLot(group, cr, al, a, b, c);
             }

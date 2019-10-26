@@ -5,37 +5,22 @@ public class Groups
     private String groupName;
     private static int discountA, discountB, discountC;
     public static String[] names = {"A", "B", "C"};
-    private ParkingLot gLot;
     private static String policiesA, policiesB, policiesC;
 
-    //Arrays.binarySearch(files, fileName) < 0
-
-
-    Groups(String gName, ParkingLot pl)
-    {
-        groupName = gName;
-        gLot = pl;
-
-        if(Arrays.binarySearch(names, gName) < 0)
-        {
-            System.out.println("ERROR: Invalid group. Available groups are: A, B, or C");
-        }
-    }
-
-    public void setLot(ParkingLot lt) { gLot = lt; }
-
-    public ParkingLot getLot(ParkingLot lt) { return gLot; }
-
+    //These may not be necessary, but they get the discounts for each group
     public static int getDiscountA() { return discountA; }
     public static int getDiscountB() { return discountB; }
     public static int getDiscountC() { return discountC; }
 
+    //These set the dicounts for each group.
     public static void setDiscountA(int disA) { discountA = disA; }
     public static void setDiscountB(int disB) { discountB = disB; }
     public static void setDiscountC(int disC) { discountC = disC; }
 
+    //Returns an array of the names of each group.
     public static String[] getNames() { return names; }
 
+    //The next 6 methods just set and return the policies for each group.
     public static void setPolicyA(String polA) { policiesA = polA;}
     public static String getPolicyA() { return policiesA; }
 
@@ -50,8 +35,7 @@ public class Groups
     {
         float price[] = new float[8];
 
-        //Arrays.fill(price, 0.0f);
-
+        //These are the default prices of each group. This is where each groups prices are set.
         float priceA[] = {0.0f, 2.0f, 4.0f, 8.0f, 10.0f, 12.0f, 14.0f, 26.0f};
         float priceB[] = {0.0f, 2.0f, 4.0f, 6.0f, 8.0f, 10.0f, 12.0f, 22.0f};
         float priceC[] = {0.0f, 2.0f, 4.0f, 10.0f, 14.0f, 16.0f, 18.0f, 30.0f};
@@ -65,7 +49,6 @@ public class Groups
             priceB[i] = priceB[i] * ((100.0f - (float)discountB) / 100.0f);
             priceC[i] = priceC[i] * ((100.0f - (float)discountC) / 100.0f);
         }
-
 
 
         if(gName == "A")
